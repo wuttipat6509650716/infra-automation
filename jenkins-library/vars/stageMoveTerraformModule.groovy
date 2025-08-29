@@ -74,7 +74,7 @@ def call(Map args) {
                     echo "Copied \$f"
                 fi
             done
-            ls -alR /project
+            ls -alR project
         """
 
         dir('project') {
