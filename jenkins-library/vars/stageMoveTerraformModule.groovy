@@ -80,7 +80,7 @@ def call(Map args) {
         container('git') {
             dir('project') {
                 withCredentials([string(credentialsId: 'initialpipeline-gitcreaterepo', variable: 'GITHUB_TOKEN')]) {
-                    sh """
+                    sh '''
                         git status
                         git config user.email "jenkins"
                         git config user.name "Jenkins User"
@@ -91,7 +91,7 @@ def call(Map args) {
                         else
                             echo "No changes to commit"
                         fi
-                    """
+                    '''
                 }
             }
         }
