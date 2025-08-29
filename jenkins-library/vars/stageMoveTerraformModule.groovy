@@ -81,6 +81,7 @@ def call(Map args) {
             dir('project') {
                 withCredentials([string(credentialsId: 'initialpipeline-gitcreaterepo', variable: 'GITHUB_TOKEN')]) {
                     sh '''
+                        git config --global --add safe.directory /home/jenkins/agent/workspace/infra-automation/request/project
                         git status
                         git config user.email "jenkins"
                         git config user.name "Jenkins User"
