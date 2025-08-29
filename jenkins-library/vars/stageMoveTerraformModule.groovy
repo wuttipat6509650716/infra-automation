@@ -4,12 +4,12 @@ def call(Map args) {
     stage("MoveTerraformModule") {
         sh "mkdir -p template"
         sh "mkdir -p project"
-
+        container('git') {
         try {
             dir('template') {
-                container('git') {
+                //container('git') {
                     git url: args.TemplateRepo, branch: 'main'
-                }
+                //}
                 echo "dir template"
                 sh "ls -al"
             }
@@ -19,9 +19,9 @@ def call(Map args) {
 
         try {
             dir('project') {
-                container('git') {
+                //container('git') {
                     git url: args.GitProjectMetadataRepo, branch: args.GitBranch
-                }
+                //}
                 echo "dir project"
                 sh "ls -al"
             }
@@ -77,7 +77,7 @@ def call(Map args) {
             ls -alR project
         """
 
-        container('git') {
+        
             dir('project') {
                 withCredentials([string(credentialsId: 'initialpipeline-gitcreaterepo', variable: 'GITHUB_TOKEN')]) {
                     sh '''
