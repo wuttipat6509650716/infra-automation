@@ -10,6 +10,7 @@ def call(Map args) {
                 container('git') {
                     git url: args.TemplateRepo, branch: 'main'
                 }
+                echo "dir template"
                 sh "ls -al"
             }
         } catch (err) {
@@ -21,6 +22,7 @@ def call(Map args) {
                 container('git') {
                     git url: args.GitProjectMetadataRepo, branch: args.GitBranch
                 }
+                echo "dir project"
                 sh "ls -al"
             }
         } catch (err) {
@@ -41,7 +43,7 @@ def call(Map args) {
                 ls -al
             '''
         }
-        def subdir = "${args.TerraformModule}-${args.Servicename}"
+        def subdir = "${args.TerraformModule}-${args.ServiceName}"
         dir('project') {
             sh """
                 for folder in terraform-configuration terraform-output terraform-module
@@ -56,20 +58,20 @@ def call(Map args) {
             """
         }
         sh """
-            if [ -f template/config.json ]; then
-                cp template/config.json project/terraform-configuration/\${subdir}/config/
+            if [ -f template/${args.TerraformModule}/config.json ]; then
+                cp template/${args.TerraformModule}/config.json project/terraform-configuration/\${subdir}
                 echo "Copied config.json"
             fi
 
-            if [ -f template/output.tf ]; then
-                cp template/output.tf project/terraform-output/\${subdir}/output/
+            if [ -f template/${args.TerraformModule}/output.tf ]; then
+                cp template/${args.TerraformModule}/output.tf project/terraform-output/\${subdir}
                 echo "Copied output.tf"
             fi
 
-            for f in backend.tf main.tf Makefile provider.tf variable.tf
+            for f in backend.tf main.tf Makefile provider.tf variables.tf
             do
-                if [ -f template/\$f ]; then
-                    cp template/\$f project/terraform-module/\${subdir}/module/
+                if [ -f template/${args.TerraformModule}/\$f ]; then
+                    cp template/${args.TerraformModule}/\$f project/terraform-module/\${subdir}
                     echo "Copied \$f"
                 fi
             done
@@ -84,7 +86,7 @@ def call(Map args) {
 
                     git add .
                     if ! git diff --cached --quiet; then
-                        git commit -m "Update terraform files for ${args.subdir}"
+                        git commit -m "Update terraform files for ${subdir}"
                         git push
                     else
                         echo "No changes to commit"
