@@ -77,21 +77,21 @@ def call(Map args) {
             ls -alR project
         """
 
-        dir('project') {
-            withCredentials([string(credentialsId: 'initialpipeline-gitcreaterepo', variable: 'GITHUB_TOKEN')]) {
-            container('git') {
-                sh """
-                    git config user.email "jenkins"
-                    git config user.name "Jenkins User"
-
-                    git add .
-                    if ! git diff --cached --quiet; then
-                        git commit -m "Update terraform files for ${subdir}"
-                        git push
-                    else
-                        echo "No changes to commit"
-                    fi
-                """
+        container('git') {
+            dir('project') {
+                withCredentials([string(credentialsId: 'initialpipeline-gitcreaterepo', variable: 'GITHUB_TOKEN')]) {
+                    sh """
+                        git status
+                        git config user.email "jenkins"
+                        git config user.name "Jenkins User"
+                        git add .
+                        if ! git diff --cached --quiet; then
+                            git commit -m "Update terraform files for ${subdir}"
+                            git push https://x-access-token:${GITHUB_TOKEN}@github.com/wuttipat6509650716/project-test-infra-automation.git HEAD:${args.GitBranch}
+                        else
+                            echo "No changes to commit"
+                        fi
+                    """
                 }
             }
         }
