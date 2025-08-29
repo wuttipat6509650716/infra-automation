@@ -40,7 +40,6 @@ def call(Map args) {
                     echo "Folder $folder already exists"
                   fi
                 done
-                ls -al
             '''
         }
         def subdir = "${args.TerraformModule}-${args.ServiceName}"
@@ -75,6 +74,7 @@ def call(Map args) {
                     echo "Copied \$f"
                 fi
             done
+            ls -al
         """
 
         dir('project') {
