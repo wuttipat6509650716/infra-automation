@@ -8,29 +8,23 @@ def call(Map args) {
         set -e
         mkdir -p ~/.ssh
         chmod 700 ~/.ssh
-        # ดึง host key ของ GitHub (เพิ่มประเภท ed25519 ด้วย)
         ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> ~/.ssh/known_hosts
         chmod 644 ~/.ssh/known_hosts
       """
-      
-      try {
-        dir('template') {
-          git url: args.TemplateRepo, branch: 'main', credentialsId: 'github-ssh-jenkins'
-          echo "template content:"
-          sh "ls -al"
-        }
-      } catch (err) {
-        error "Git clone (template) failed: ${err.message}"
-      }
 
-      try {
-        dir('project') {
-          git url: args.GitProjectMetadataRepo, branch: args.GitBranch, credentialsId: 'github-ssh-jenkins'
-          echo "project content:"
-          sh "ls -al"
-        }
-      } catch (err) {
-        error "Git clone (project) failed: ${err.message}"
+      sshagent(['github-ssh-jenkins']) {
+        sh """
+          set -e
+          cd template
+          git clone --branch main ${args.TemplateRepo} .
+          ls -al
+        """
+        sh """
+          set -e
+          cd project
+          git clone --branch ${args.GitBranch} ${args.GitProjectMetadataRepo} .
+          ls -al
+        """
       }
 
       sh """
