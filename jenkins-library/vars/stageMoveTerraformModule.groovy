@@ -12,20 +12,25 @@ def call(Map args) {
         chmod 644 ~/.ssh/known_hosts
       """
 
-      sshagent(['github-ssh-jenkins']) {
-        sh """
-          set -e
-          cd template
-          git clone --branch main ${args.TemplateRepo} .
-          ls -al
-        """
-        sh """
-          set -e
-          cd project
-          git clone --branch ${args.GitBranch} ${args.GitProjectMetadataRepo} .
-          ls -al
-        """
-      }
+      withCredentials([sshUserPrivateKey(credentialsId: 'github-ssh-jenkins',
+                                   keyFileVariable: 'SSH_KEY',
+                                   usernameVariable: 'SSH_USER')]) {
+            sh """
+                set -e
+                export GIT_SSH_COMMAND='ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no'
+                cd template
+                git clone --branch main ${args.TemplateRepo} .
+                ls -al
+            """
+            sh """
+                set -e
+                export GIT_SSH_COMMAND='ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no'
+                cd project
+                git clone --branch ${args.GitBranch} ${args.GitProjectMetadataRepo} .
+                ls -al
+            """
+        }
+
 
       sh """
         set -e
@@ -73,20 +78,22 @@ def call(Map args) {
         """
       }
 
-      sshagent(['github-ssh-jenkins']) {
-        dir('project') {
-          sh """
-            set -e
-            git config user.email "jenkins@local"
-            git config user.name "Jenkins CI"
-
-            git add -A
-            git commit -m "Move Terraform module: ${subdir}" || echo "No changes to commit"
-
-            git push origin ${args.GitBranch}
-          """
+      withCredentials([sshUserPrivateKey(credentialsId: 'github-ssh-jenkins',
+                                   keyFileVariable: 'SSH_KEY',
+                                   usernameVariable: 'SSH_USER')]) {
+            dir('project') {
+                sh """
+                set -e
+                export GIT_SSH_COMMAND='ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no'
+                git config user.email "jenkins@local"
+                git config user.name "Jenkins CI"
+                git add -A
+                git commit -m "Move Terraform module: ${subdir}" || echo "No changes to commit"
+                git push origin ${args.GitBranch}
+                """
+            }
         }
-      }
+
     }
   }
 }
