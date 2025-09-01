@@ -63,10 +63,10 @@ def call(Map args) {
             """
 
             withCredentials([string(credentialsId: 'initialpipeline-gitcreaterepo', variable: 'GITHUB_TOKEN')]) {
+                def newOrigin = args.GitProjectMetadataRepo.replaceFirst('https://', "https://${env.GITHUB_TOKEN}@")
+
                 sh """
                     set -e
-
-                    echo "PWD=\$(pwd)"
                     test -d project/.git || { echo "ERROR: project/.git not found"; exit 1; }
 
                     git -C project config user.name  "Jenkins"
@@ -74,21 +74,14 @@ def call(Map args) {
 
                     git -C project checkout -B ${args.GitBranch}
 
-                    new_origin="\$(echo "${args.GitProjectMetadataRepo}" | sed 's#https://#https://'"\\$"'{GITHUB_TOKEN}@#')"
-                    git -C project remote set-url origin "\${new_origin}"
+                    git -C project remote set-url origin "${newOrigin}"
 
-                    git -C project status
                     git -C project add -A
-
-                    if ! git -C project diff --cached --quiet; then
-                      git -C project commit -m "chore: update terraform module ${args.TerraformModule}-${args.ServiceName}"
-                      git -C project push -u origin ${args.GitBranch}
-                    else
-                      echo "No changes to commit"
-                      git -C project push -u origin ${args.GitBranch} || true
-                    fi
+                    git -C project diff --cached --quiet || git -C project commit -m "chore: update terraform module ${args.TerraformModule}-${args.ServiceName}"
+                    git -C project push -u origin ${args.GitBranch}
                 """
             }
+
         }
     }
 }
