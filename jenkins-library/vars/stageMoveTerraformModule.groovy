@@ -80,7 +80,7 @@ def call(Map args) {
         
             dir('project') {
                 withCredentials([string(credentialsId: 'initialpipeline-gitcreaterepo', variable: 'GITHUB_TOKEN')]) {
-                    sh '''
+                    sh """
                         ls -al
                         git config --global --add safe.directory /home/jenkins/agent/workspace/infra-automation/request/project
                         git status
@@ -93,7 +93,7 @@ def call(Map args) {
                         else
                             echo "No changes to commit"
                         fi
-                    '''
+                    """
                 }
             }
         }
