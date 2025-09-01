@@ -30,7 +30,7 @@ def call(Map args) {
         }
 
         dir('project') {
-            sh '''
+            sh """
                 for folder in terraform-configuration terraform-output terraform-module
                 do
                   if [ ! -d "$folder" ]; then
@@ -40,7 +40,7 @@ def call(Map args) {
                     echo "Folder $folder already exists"
                   fi
                 done
-            '''
+            """
         }
         def subdir = "${args.TerraformModule}-${args.ServiceName}"
         dir('project') {
