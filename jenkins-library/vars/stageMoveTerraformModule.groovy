@@ -70,30 +70,21 @@ def call(Map args) {
         ls -alR project
       """
 
-      dir('project') {
-        sh """
-          set -e
-          git remote set-url origin ${args.GitProjectMetadataRepo}
-          git remote -v
-        """
-      }
-
       withCredentials([sshUserPrivateKey(credentialsId: 'github-ssh-jenkins',
                                    keyFileVariable: 'SSH_KEY',
                                    usernameVariable: 'SSH_USER')]) {
-            dir('project') {
-                sh """
-                set -e
-                export GIT_SSH_COMMAND='ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no'
-                git config user.email "jenkins@local"
-                git config user.name "Jenkins CI"
-                git add -A
-                git commit -m "Move Terraform module: ${subdir}" || echo "No changes to commit"
-                git push origin ${args.GitBranch}
-                """
-            }
-        }
-
+          dir('project') {
+              sh """
+              set -e
+              export GIT_SSH_COMMAND='ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no'
+              git config user.email "jenkins@local"
+              git config user.name "Jenkins CI"
+              git add -A
+              git commit -m "Move Terraform module: ${subdir}" || echo "No changes to commit"
+              git push origin ${args.GitBranch}
+              """
+          }
+      }
     }
   }
 }
