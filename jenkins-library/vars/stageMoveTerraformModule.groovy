@@ -36,7 +36,7 @@ def call(Map args) {
         set -e
         for folder in terraform-configuration terraform-output terraform-module; do
           if [ -d project/\$folder/${subdir} ]; then
-            echo "Directory \$folder_path already exists. Exiting..."
+            echo "Servicename :${args.ServiceName} already exists. Exiting..."
             exit 1
           fi
           [ -d project/\$folder/${subdir} ] || mkdir -p project/\$folder/${subdir}
