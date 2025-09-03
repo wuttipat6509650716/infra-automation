@@ -69,6 +69,8 @@ def call(Map args) {
               sh """
               set -e
               export GIT_SSH_COMMAND='ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no'
+              git config user.email "jenkins@local"
+              git config user.name "Jenkins"
               git add -A
               git commit -m "Move Terraform module: ${subdir}" || echo "No changes to commit"
               git push origin ${args.GitBranch}
