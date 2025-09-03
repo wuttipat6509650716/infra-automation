@@ -29,7 +29,7 @@ def call(Map args) {
                 git clone --branch ${args.GitBranch} ${args.GitProjectMetadataRepo} .
                 ls -al
             """
-        }
+      ß}
 
 
       sh """
@@ -49,22 +49,10 @@ def call(Map args) {
 
       sh """
         set -e
-
-        if [ -f template/terraform/${args.TerraformModule}/config.json ]; then
-          cp template/terraform/${args.TerraformModule}/config.json project/terraform-configuration/${subdir}/
-          echo "Copied config.json"
-        fi
-
-        if [ -f template/terraform/${args.TerraformModule}/output.tf ]; then
-          cp template/terraform/${args.TerraformModule}/output.tf project/terraform-output/${subdir}/
-          echo "Copied output.tf"
-        fi
-
+        cp template/terraform/${args.TerraformModule}/config.json project/terraform-configuration/${subdir}/
+        cp template/terraform/${args.TerraformModule}/output.tf project/terraform-output/${subdir}/          
         for f in backend.tf main.tf Makefile provider.tf variables.tf; do
-          if [ -f template/terraform/${args.TerraformModule}/\$f ]; then
-            cp template/terraform/${args.TerraformModule}/\$f project/terraform-module/${subdir}/
-            echo "Copied \$f"
-          fi
+          cp template/terraform/${args.TerraformModule}/\$f project/terraform-module/${subdir}/
         done
 
         ls -alR project
