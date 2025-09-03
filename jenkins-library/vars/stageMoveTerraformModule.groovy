@@ -29,7 +29,7 @@ def call(Map args) {
                 git clone --branch ${args.GitBranch} ${args.GitProjectMetadataRepo} .
                 ls -al
             """
-      ß}
+      }
 
 
       sh """
