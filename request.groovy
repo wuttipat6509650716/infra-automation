@@ -13,9 +13,9 @@ properties([
 
 initial([
     GitBranch: "main",
-    GitProjectMetadataRepo: "https://github.com/wuttipat6509650716/project-test-infra-automation.git",
+    GitProjectMetadataRepo: "git@github.com:wuttipat6509650716/project-test-infra-automation.git",
     //GitUser: "wuttipat6509650716",
-    TemplateRepo: "https://github.com/wuttipat6509650716/infra-automation.git",
+    TemplateRepo: "git@github.com:wuttipat6509650716/infra-automation.git",
     TerraformModule: params.TerraformModule,
     ServiceName: params.ServiceName
 ]) { context ->

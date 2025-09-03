@@ -4,14 +4,6 @@ def call(Map args) {
     container('git') {
       sh "rm -rf template project && mkdir -p template project"
 
-      sh """
-        set -e
-        mkdir -p ~/.ssh
-        chmod 700 ~/.ssh
-        ssh-keyscan -t rsa,ecdsa,ed25519 github.com >> ~/.ssh/known_hosts
-        chmod 644 ~/.ssh/known_hosts
-      """
-
       withCredentials([sshUserPrivateKey(credentialsId: 'github-ssh-jenkins',
                                    keyFileVariable: 'SSH_KEY',
                                    usernameVariable: 'SSH_USER')]) {
@@ -49,10 +41,22 @@ def call(Map args) {
 
       sh """
         set -e
-        cp template/terraform/${args.TerraformModule}/config.json project/terraform-configuration/${subdir}/
-        cp template/terraform/${args.TerraformModule}/output.tf project/terraform-output/${subdir}/          
+
+        if [ -f template/terraform/${args.TerraformModule}/ .json ]; then
+          cp template/terraform/${args.TerraformModule}/config.json project/terraform-configuration/${subdir}/
+          echo "Copied config.json"
+        fi
+
+        if [ -f template/terraform/${args.TerraformModule}/output.tf ]; then
+          cp template/terraform/${args.TerraformModule}/output.tf project/terraform-output/${subdir}/
+          echo "Copied output.tf"
+        fi
+
         for f in backend.tf main.tf Makefile provider.tf variables.tf; do
-          cp template/terraform/${args.TerraformModule}/\$f project/terraform-module/${subdir}/
+          if [ -f template/terraform/${args.TerraformModule}/\$f ]; then
+            cp template/terraform/${args.TerraformModule}/\$f project/terraform-module/${subdir}/
+            echo "Copied \$f"
+          fi
         done
 
         ls -alR project
@@ -65,8 +69,6 @@ def call(Map args) {
               sh """
               set -e
               export GIT_SSH_COMMAND='ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no'
-              git config user.email "jenkins@local"
-              git config user.name "Jenkins CI"
               git add -A
               git commit -m "Move Terraform module: ${subdir}" || echo "No changes to commit"
               git push origin ${args.GitBranch}
