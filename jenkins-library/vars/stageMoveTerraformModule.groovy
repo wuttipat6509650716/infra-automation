@@ -46,21 +46,15 @@ def call(Map args) {
       sh """
         set -e
 
-        if [ -f template/terraform/${args.TerraformModule}/ .json ]; then
-          cp template/terraform/${args.TerraformModule}/config.json project/terraform-configuration/${subdir}/
-          echo "Copied config.json"
-        fi
+        cp template/terraform/${args.TerraformModule}/config.json project/terraform-configuration/${subdir}/
+        echo "Copied config.json"
 
-        if [ -f template/terraform/${args.TerraformModule}/output.tf ]; then
-          cp template/terraform/${args.TerraformModule}/output.tf project/terraform-output/${subdir}/
-          echo "Copied output.tf"
-        fi
+        cp template/terraform/${args.TerraformModule}/output.tf project/terraform-output/${subdir}/
+        echo "Copied output.tf"
 
         for f in backend.tf main.tf Makefile provider.tf variables.tf; do
-          if [ -f template/terraform/${args.TerraformModule}/\$f ]; then
-            cp template/terraform/${args.TerraformModule}/\$f project/terraform-module/${subdir}/
-            echo "Copied \$f"
-          fi
+          cp template/terraform/${args.TerraformModule}/\$f project/terraform-module/${subdir}/
+          echo "Copied \$f"
         done
 
         ls -alR project
