@@ -19,5 +19,6 @@ initial([
     TerraformModule: params.TerraformModule,
     ServiceName: params.ServiceName
 ]) { context ->
+    stagePrepareAndCheckout(context)
     stageMoveTerraformModule(context)
 }

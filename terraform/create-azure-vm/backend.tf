@@ -1,3 +1,4 @@
+//backend.tf
 terraform {
   backend "azurerm" {
     resource_group_name  = "ชื่อ-resource-group"

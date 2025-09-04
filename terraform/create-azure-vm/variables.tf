@@ -1,3 +1,5 @@
+//variables.tf
+
 variable "location" {
   type        = string
 }
