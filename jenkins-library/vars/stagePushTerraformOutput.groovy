@@ -4,7 +4,7 @@ def call(Map args) {
     stage("PushTerraformOutput") {
         container("terraform"){
             sh '''
-                cd project/terraform-module
+                cd project/terraform-module/{$args.TerraformName}
                 make output > ../terraform-output/output.json
             '''
         }
