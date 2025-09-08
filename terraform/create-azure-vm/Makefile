@@ -1,7 +1,10 @@
 # Makefile
 .PHONY: init plan apply destroy fmt validate output
 
-CONFIG_FILE ?= ../../terraform-configuration/config.json
+CONFIG_FILE ?= ./config.json
+
+plan: init
+	terraform plan -var-file=$(CONFIG_FILE) -out=tfplan
 
 init:
 	terraform init

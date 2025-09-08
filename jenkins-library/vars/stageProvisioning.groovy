@@ -15,7 +15,7 @@ def call(Map args) {
           sh """
             cd project/terraform-module/${args.TerraformName}
             make init
-            make plan
+            make plan CONFIG_FILE=../../terraform-configuration/${args.TerraformName}/config.json
           """
           if(SKIP_APPROVAL == true){
             timeout(time: 15, unit: 'MINUTES') {
