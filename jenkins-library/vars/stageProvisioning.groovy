@@ -17,7 +17,7 @@ def call(Map args) {
             make init
             make plan CONFIG_FILE=../../terraform-configuration/${args.TerraformName}/config.json
           """
-          if(SKIP_APPROVAL == false){
+          if(args.SKIP_APPROVAL == false){
             timeout(time: 15, unit: 'MINUTES') {
                 input message: "Approve Terraform Apply?", ok: "Apply Now"
             }
