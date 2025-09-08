@@ -26,7 +26,7 @@ resource "azurerm_network_interface" "nic" {
   ip_configuration {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.subnet.id
-    private_ip_address_allocation = var.allocation_method
+    private_ip_address_allocation = var.private_ip_allocation_method
     public_ip_address_id          = azurerm_public_ip.vm_ip.id
   }
 }
@@ -58,7 +58,9 @@ resource "azurerm_public_ip" "vm_ip" {
   name                = "${var.vm_name}-publicip"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Dynamic"
+
+  sku               = var.public_ip_sku
+  allocation_method = var.public_ip_allocation_method
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {

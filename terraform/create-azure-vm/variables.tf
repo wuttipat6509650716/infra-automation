@@ -35,3 +35,15 @@ variable "subnet_prefix" {
 variable "allocation_method" {
   type        = string
 }
+
+variable "public_ip_allocation_method" {
+  type    = string
+}
+
+variable "private_ip_allocation_method" {
+  type    = string
+}
+
+variable "public_ip_sku" {
+  type    = string
+}
