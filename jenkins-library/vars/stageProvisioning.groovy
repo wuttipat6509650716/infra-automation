@@ -5,13 +5,13 @@ def call(Map args) {
     container('terraform') {
       sh "apk add --no-cache make bash"
 
-      withAzureCredentials(bindings: [azureServicePrincipal('azure-service-principal')]) {
-        withEnv([
-            "ARM_CLIENT_ID=${env.AZURE_CLIENT_ID}",
-            "ARM_CLIENT_SECRET=${env.AZURE_CLIENT_SECRET}",
-            "ARM_TENANT_ID=${env.AZURE_TENANT_ID}",
-            "ARM_SUBSCRIPTION_ID=${env.AZURE_SUBSCRIPTION_ID}"
-        ]) {
+      withCredentials([azureServicePrincipal(
+        credentialsId: 'azure-service-principal',
+        subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+        clientIdVariable:       'ARM_CLIENT_ID',
+        clientSecretVariable:   'ARM_CLIENT_SECRET',
+        tenantIdVariable:       'ARM_TENANT_ID'
+        )]) {
           sh '''
             cd project/terraform-module
             make plan
