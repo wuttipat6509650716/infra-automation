@@ -12,20 +12,20 @@ def call(Map args) {
         clientSecretVariable:   'ARM_CLIENT_SECRET',
         tenantIdVariable:       'ARM_TENANT_ID'
         )]) {
-          sh '''
+          sh """
             cd project/terraform-module/${args.TerraformName}
             make plan
-          '''
+          """
           if(SKIP_APPROVAL == true){
             timeout(time: 15, unit: 'MINUTES') {
                 input message: "Approve Terraform Apply?", ok: "Apply Now"
             }
           }
 
-          sh '''
+          sh """
             cd project/terraform-module/${args.TerraformName}
             make apply AUTO_APPROVE=true
-          '''
+          """
         }
       }
     }
