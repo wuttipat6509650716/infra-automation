@@ -17,7 +17,10 @@ initial([
     //GitUser: "wuttipat6509650716",
     TemplateRepo: "git@github.com:wuttipat6509650716/infra-automation.git",
     TerraformModule: params.TerraformModule,
-    ServiceName: params.ServiceName
+    ServiceName: params.ServiceName,
+    CloudProvider: params.CloudProvider,
+    DataCenterName: params.DataCenterName,
+    Request: "Yes"
 ]) { context ->
     stagePrepareAndCheckout(context)
     stageMoveTerraformModule(context)

@@ -16,9 +16,14 @@ initial([
     GitBranch: "main",
     GitProjectMetadataRepo: "git@github.com:wuttipat6509650716/project-test-infra-automation.git",
     //GitUser: "wuttipat6509650716",
-    TerraformModule: params.TerraformModule,
-    ServiceName: params.ServiceName
+    TerraformName: params.TerraformName,
+    CloudProvider: params.CloudProvider,
+    DataCenterName: params.DataCenterName,
+    TargetEnv: params.TargetEnv,
+    SKIP_APPROVAL: params.SKIP_APPROVAL,
+    Provision: "Yes"
 ]) { context ->
     stagePrepareAndCheckout(context)
-    stageMoveTerraformModule(context)
+    stageProvisioning(context)
+    stagePushTerraformOutput(context)
 }

@@ -1,5 +1,5 @@
 # Makefile
-.PHONY: init plan apply destroy fmt validate
+.PHONY: init plan apply destroy fmt validate output
 
 CONFIG_FILE ?= ../terraform-configuration/config.json
 
@@ -20,3 +20,6 @@ fmt:
 
 validate:
 	terraform validate
+
+output:
+	terraform output -json

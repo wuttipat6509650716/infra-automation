@@ -27,10 +27,9 @@ def call(Map args) {
         cp template/terraform/${args.TerraformModule}/config.json project/terraform-configuration/${subdir}/
         echo "Copied config.json"
 
-        cp template/terraform/${args.TerraformModule}/output.tf project/terraform-output/${subdir}/
-        echo "Copied output.tf"
+        echo "nothing" > project/terraform-output/${subdir}/output.json
 
-        for f in backend.tf main.tf Makefile provider.tf variables.tf; do
+        for f in backend.tf main.tf Makefile provider.tf variables.tf output.tf; do
           cp template/terraform/${args.TerraformModule}/\$f project/terraform-module/${subdir}/
           echo "Copied \$f"
         done
