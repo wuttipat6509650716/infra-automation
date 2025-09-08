@@ -29,7 +29,6 @@ def call(Map args) {
         }
       }
     }
-  }
 }
 
 
