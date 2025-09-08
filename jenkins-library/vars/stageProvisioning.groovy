@@ -14,6 +14,7 @@ def call(Map args) {
         )]) {
           sh """
             cd project/terraform-module/${args.TerraformName}
+            make init
             make plan
           """
           if(SKIP_APPROVAL == true){
