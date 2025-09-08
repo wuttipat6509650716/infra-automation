@@ -13,7 +13,7 @@ def call(Map args) {
         tenantIdVariable:       'ARM_TENANT_ID'
         )]) {
           sh '''
-            cd project/terraform-module/{$args.TerraformName}
+            cd project/terraform-module/${args.TerraformName}
             make plan
           '''
           if(SKIP_APPROVAL == true){
@@ -23,7 +23,7 @@ def call(Map args) {
           }
 
           sh '''
-            cd project/terraform-module/{$args.TerraformName}
+            cd project/terraform-module/${args.TerraformName}
             make apply AUTO_APPROVE=true
           '''
         }
