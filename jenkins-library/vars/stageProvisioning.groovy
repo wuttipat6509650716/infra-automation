@@ -5,12 +5,12 @@ def call(Map args) {
     container('terraform') {
       sh "apk add --no-cache make bash"
 
-      withCredentials([usernamePassword(credentialsId: 'azure-service-principal', usernameVariable: 'ARM_CLIENT_ID', passwordVariable: 'ARM_CLIENT_SECRET')]) {
+      withAzureCredentials(bindings: [azureServicePrincipal('azure-service-principal')]) {
         withEnv([
-          "ARM_CLIENT_ID=$ARM_CLIENT_ID",
-          "ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET",
-          "ARM_TENANT_ID=$AZURE_SP_TENANT_ID",
-          "ARM_SUBSCRIPTION_ID=$AZURE_SP_SUBSCRIPTION_ID"
+            "ARM_CLIENT_ID=${env.AZURE_CLIENT_ID}",
+            "ARM_CLIENT_SECRET=${env.AZURE_CLIENT_SECRET}",
+            "ARM_TENANT_ID=${env.AZURE_TENANT_ID}",
+            "ARM_SUBSCRIPTION_ID=${env.AZURE_SUBSCRIPTION_ID}"
         ]) {
           sh '''
             cd project/terraform-module
@@ -31,3 +31,21 @@ def call(Map args) {
     }
   }
 }
+
+
+// 
+// withAzureCredentials(bindings: [azureServicePrincipal('azure-service-principal')]) {
+//   container('terraform') {
+//     sh '''
+//       set -e
+//       export ARM_CLIENT_ID="$AZURE_CLIENT_ID"
+//       export ARM_CLIENT_SECRET="$AZURE_CLIENT_SECRET"
+//       export ARM_TENANT_ID="$AZURE_TENANT_ID"
+//       export ARM_SUBSCRIPTION_ID="$AZURE_SUBSCRIPTION_ID"
+
+//       terraform -version
+//       terraform init
+//       terraform apply -auto-approve
+//     '''
+//   }
+// }
