@@ -32,10 +32,6 @@ variable "subnet_prefix" {
   type = list(string)
 }
 
-variable "allocation_method" {
-  type        = string
-}
-
 variable "public_ip_allocation_method" {
   type    = string
 }

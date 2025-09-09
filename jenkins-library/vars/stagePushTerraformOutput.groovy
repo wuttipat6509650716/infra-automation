@@ -5,7 +5,8 @@ def call(Map args) {
         container("terraform"){
             sh """
                 cd project/terraform-module/${args.TerraformName}
-                make output > ../terraform-output/output.json
+                make output > ../../terraform-output/${args.TerraformName}/output.json
+                cat ../../terraform-output/${args.TerraformName}/output.json
             """
         }
         container("git"){

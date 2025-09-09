@@ -13,7 +13,7 @@ plan:
 	terraform plan -var-file=$(CONFIG_FILE) -out=tfplan
 
 apply:
-	terraform apply tfplan
+	terraform apply $(if $(AUTO_APPROVE),-auto-approve) tfplan
 
 destroy:
 	terraform destroy -var-file=$(CONFIG_FILE)
