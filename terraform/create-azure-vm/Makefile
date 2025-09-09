@@ -3,9 +3,6 @@
 
 CONFIG_FILE ?= ./config.json
 
-plan: init
-	terraform plan -var-file=$(CONFIG_FILE) -out=tfplan
-
 init:
 	terraform init
 
@@ -15,8 +12,11 @@ plan:
 apply:
 	terraform apply $(if $(AUTO_APPROVE),-auto-approve) tfplan
 
+plan-destroy:
+	terraform plan -destroy -var-file=$(CONFIG_FILE) -out=tfplan_destroy
+
 destroy:
-	terraform destroy -var-file=$(CONFIG_FILE)
+	terraform apply $(if $(AUTO_APPROVE),-auto-approve) tfplan_destroy
 
 fmt:
 	terraform fmt

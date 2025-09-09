@@ -1,0 +1,13 @@
+//Create
+
+az group create --name terraform-rg --location southeastasia
+
+az storage account create \
+  --resource-group terraform-rg \
+  --name terraformstate12345abcde \
+  --sku Standard_LRS \
+  --encryption-services blob
+
+az storage container create \
+  --name tfstate \
+  --account-name terraformstate12345abcde

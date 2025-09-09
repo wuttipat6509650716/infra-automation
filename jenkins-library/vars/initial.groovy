@@ -13,7 +13,7 @@ def call(Map args = [:], Closure body = null) {
                 }
             }
         }
-    } else if (args.Provision == "Yes"){
+    } else if (args.Provision == "Yes" || args.Destroy == "Yes"){
         def provisionYaml = libraryResource('slaves/provision.yaml')
         podTemplate(yaml: provisionYaml) {
             node(POD_LABEL) {
