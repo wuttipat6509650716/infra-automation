@@ -15,9 +15,9 @@ def call(Map args) {
       ]) {
         sh """
           set -e
-          cd project/terraform-module/${args.TargetTerraformModule}
+          cd project/terraform-module/${args.TerraformName}
           make init
-          make plan-destroy CONFIG_FILE=../../terraform-configuration/${args.TargetTerraformModule}/config.json
+          make plan-destroy CONFIG_FILE=../../terraform-configuration/${args.TerraformName}/config.json
         """
 
         if (!args.SKIP_APPROVAL) {
@@ -41,7 +41,7 @@ def call(Map args) {
 
         sh """
           set -e
-          cd project/terraform-module/${args.TargetTerraformModule}
+          cd project/terraform-module/${args.TerraformName}
           make destroy AUTO_APPROVE=true
         """
       }
