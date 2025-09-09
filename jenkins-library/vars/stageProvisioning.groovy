@@ -28,7 +28,7 @@ def call(Map args) {
               parameters: [
                 choice(
                   name:        'ACTION',
-                  choices:     ['Apply', 'Abort'],
+                  choices:     ['Apply'],
                   description: 'Select action'
                 )
               ]
