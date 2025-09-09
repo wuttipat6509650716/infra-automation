@@ -31,7 +31,7 @@ def call(Map args) {
                         ls -al
                     """
                 }
-            } else if (args.Provision == "Yes"){
+            } else if (args.Provision == "Yes" || args.Destroy == "Yes"){
                 sh """
                     rm -rf project
                     mkdir -p project
