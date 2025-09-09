@@ -36,11 +36,11 @@ def call(Map args) {
 
         ls -alR project
       """
-      
+
       //edit backend.tf
       sh """
         set -e
-        sed -i 's/servicename.tfstate/\$subdir.tfstate/' project/terraform-module/${subdir}/backend.tf
+        sed -i 's/servicename.tfstate/\${subdir}.tfstate/' project/terraform-module/${subdir}/backend.tf
       """
 
       withCredentials([sshUserPrivateKey(credentialsId: 'github-ssh-jenkins',
