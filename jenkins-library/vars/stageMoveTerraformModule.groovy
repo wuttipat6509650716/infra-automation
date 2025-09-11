@@ -62,6 +62,7 @@ def call(Map args) {
           *_override.tf.json
           .terraform.lock.hcl
           *.tfplan
+          *.tfplan_destroy
           .DS_Store
           EOL
           echo "Added .gitignore file project"

@@ -1,0 +1,8 @@
+{
+  "resource_group_name": "aks-rg",
+  "location": "southeastasia",
+  "aks_name": "demo-aks",
+  "dns_prefix": "demoaks",
+  "node_count": 1,
+  "node_vm_size": "Standard_B2s"
+}
