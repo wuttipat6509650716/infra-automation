@@ -43,32 +43,31 @@ def call(Map args) {
         sed -i "s/servicename.tfstate/${subdir}.tfstate/" "project/terraform-module/${subdir}/backend.tf"
       """
       //check gitignore
-      sh '''
-      set -e
-      if [ -f project/.gitignore ]; then
-        echo ".gitignore already exists"
-      else
-        echo "Creating .gitignore file"
-        cat <<'EOL' > project/.gitignore
-      # Terraform
-      .terraform/
-      *.tfstate
-      *.tfstate.backup
-      terraform.tfplan
-      crash.log
-      override.tf
-      override.tf.json
-      *_override.tf
-      *_override.tf.json
-      .terraform.lock.hcl
-      *.tfplan
-      *.tfplan_destroy
-      .DS_Store
-      EOL
-        echo "Added .gitignore file project"
-      fi
-      '''
-
+      // sh """
+      //   set -e
+      //   if [ -f project/.gitignore ]; then
+      //     echo ".gitignore already exists"
+      //   else
+      //     echo "Creating .gitignore file"
+      //     cat <<EOL > project/.gitignore
+      //   # Terraform
+      //   .terraform/
+      //   *.tfstate
+      //   *.tfstate.backup
+      //   terraform.tfplan
+      //   crash.log
+      //   override.tf
+      //   override.tf.json
+      //   *_override.tf
+      //   *_override.tf.json
+      //   .terraform.lock.hcl
+      //   *.tfplan
+      //   *.tfplan_destroy
+      //   .DS_Store
+      //   EOL
+      //     echo "Added .gitignore file project"
+      //   fi
+      // """
 
       withCredentials([sshUserPrivateKey(credentialsId: 'github-ssh-jenkins',
                                    keyFileVariable: 'SSH_KEY',
