@@ -49,7 +49,7 @@ def call(Map args) {
         echo ".gitignore already exists"
       else
         echo "Creating .gitignore file"
-        cat <<EOL > project/.gitignore
+        cat <<'EOL' > project/.gitignore
       # Terraform
       .terraform/
       *.tfstate
@@ -68,6 +68,7 @@ def call(Map args) {
         echo "Added .gitignore file project"
       fi
       '''
+
 
       withCredentials([sshUserPrivateKey(credentialsId: 'github-ssh-jenkins',
                                    keyFileVariable: 'SSH_KEY',
